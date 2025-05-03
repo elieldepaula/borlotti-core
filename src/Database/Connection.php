@@ -27,17 +27,32 @@ class Connection
     {
         $capsule = new Capsule();
 
-        $capsule->addConnection([
-            'driver' => $_ENV['DB_DRIVER'],
-            'host' => $_ENV['DB_HOST'],
-            'database' => $_ENV['DB_NAME'],
-            'username' => $_ENV['DB_USER'],
-            'password' => $_ENV['DB_PASS'],
-            'charset' => $_ENV['DB_CHARSET']?? 'utf8',
-            'collation' => $_ENV['DB_COLLATION']?? 'utf8_unicode_ci',
-            'prefix' => $_ENV['DB_PREFIX']??'',
-            'port' => $_ENV['DB_PORT']??3306,
-        ]);
+        $connection = [
+            'development' => [
+                'driver' => $_ENV['DEV_DB_DRIVER'],
+                'host' => $_ENV['DEV_DB_HOST'],
+                'database' => $_ENV['DEV_DB_NAME'],
+                'username' => $_ENV['DEV_DB_USER'],
+                'password' => $_ENV['DEV_DB_PASS'],
+                'port' => $_ENV['DEV_DB_PORT']??3306,
+                'charset' => $_ENV['DEV_DB_CHARSET'] ?? 'utf8',
+                'collation' => $_ENV['DEV_DB_COLLATION'] ?? 'utf8_unicode_ci',
+                'prefix' => $_ENV['DEV_DB_PREFIX'] ?? ''
+            ],
+            'production' => [
+                'driver' => $_ENV['PRD_DB_DRIVER'],
+                'host' => $_ENV['PRD_DB_HOST'],
+                'database' => $_ENV['PRD_DB_NAME'],
+                'username' => $_ENV['PRD_DB_USER'],
+                'password' => $_ENV['PRD_DB_PASS'],
+                'port' => $_ENV['PRD_DB_PORT']??3306,
+                'charset' => $_ENV['PRD_DB_CHARSET'] ?? 'utf8',
+                'collation' => $_ENV['PRD_DB_COLLATION'] ?? 'utf8_unicode_ci',
+                'prefix' => $_ENV['PRD_DB_PREFIX'] ?? ''
+            ]
+        ];
+
+        $capsule->addConnection($connection[$_ENV['APP_ENV']]);
 
         $capsule->setAsGlobal();
         $capsule->bootEloquent();
