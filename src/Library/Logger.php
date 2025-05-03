@@ -31,6 +31,10 @@ class Logger implements LoggerInterface
     public function __construct(string $logFile = 'var/logs/system.log')
     {
         $this->logFile = BASE_PATH . $logFile;
+        $directory = dirname($this->logFile);
+        if (!is_dir($directory)) {
+            mkdir($directory, 0777, true);
+        }
     }
 
     /**
