@@ -1,6 +1,16 @@
 #!/usr/bin/env php
 <?php
 
+/**
+ * Copyright (c) 2025 - Borlotti Project.
+ *
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ *
+ * @copyright   Copyright (c) Eliel de Paula <elieldepaula@gmail.com>
+ * @license     https://www.opensource.org/licenses/mit-license.php MIT License
+ */
+
 //TODO: Redefine the base path.
 require_once __DIR__ . '/../../vendor/autoload.php';
 
