@@ -20,4 +20,5 @@ return [
     \Borlotti\Core\Api\DateInterface::class => \Borlotti\Core\Library\Date::class,
     \Borlotti\Core\Api\SessionInterface::class => \Borlotti\Core\Library\Session\Session::class,
     \Borlotti\Core\Api\EncryptInterface::class => \Borlotti\Core\Library\Encrypt::class,
+    \Borlotti\Core\Api\MessageManagerInterface::class => \Borlotti\Core\Library\MessageManager::class,
 ];
