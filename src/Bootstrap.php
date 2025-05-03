@@ -21,6 +21,7 @@ use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use DI\Container;
 use Twig\Error\LoaderError;
+use Twig\Loader\FilesystemLoader;
 
 class Bootstrap
 {
@@ -98,7 +99,7 @@ class Bootstrap
      * @return $this
      * @throws LoaderError
      */
-    public function setTemplatesPath($path, $useCache = false): Bootstrap
+    public function setTemplatesPath(FilesystemLoader $path, $useCache = false): Bootstrap
     {
         $this->template = new Twig($path, ['cache' => $useCache]);
         $this->app->add(TwigMiddleware::create($this->app, $this->template));
