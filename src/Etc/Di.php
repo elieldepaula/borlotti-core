@@ -11,7 +11,9 @@
  */
 
 declare(strict_types=1);
-
+/**
+ * Dependency injection array.
+ */
 return [
     \Psr\Log\LoggerInterface::class => \Borlotti\Core\Library\Logger::class,
     \Borlotti\Core\Api\JsonInterface::class => \Borlotti\Core\Library\Json::class,

@@ -136,11 +136,11 @@ class Date implements DateInterface
         if (is_string($input)) {
             $dt = new DateTime($input);
             if (!$dt) {
-                throw new InvalidArgumentException("Data inválida: $input");
+                throw new InvalidArgumentException("Invalid date: $input");
             }
             return $dt;
         }
 
-        throw new InvalidArgumentException('Valor inválido para data.');
+        throw new InvalidArgumentException('The value is invalid for the date.');
     }
 }

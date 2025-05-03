@@ -126,7 +126,7 @@ class Logger implements LoggerInterface
 
     protected function interpolate(string $message, array $context = []): string
     {
-        // Substitui chaves do tipo {key} com valores do contexto
+        // Replaces keys of type {key} with values from the context
         $replacements = [];
         foreach ($context as $key => $val) {
             $replacements['{' . $key . '}'] = is_scalar($val) ? $val : json_encode($val);

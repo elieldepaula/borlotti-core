@@ -29,7 +29,7 @@ class Encrypt implements EncryptInterface
         $cipherText = openssl_encrypt($data, self::CIPHER, $key, OPENSSL_RAW_DATA, $iv);
 
         if ($cipherText === false) {
-            throw new \RuntimeException('Erro ao criptografar os dados.');
+            throw new \RuntimeException('Error on encrypt data.');
         }
 
         return base64_encode($iv . $cipherText);
@@ -42,7 +42,7 @@ class Encrypt implements EncryptInterface
     {
         $decoded = base64_decode($encrypted, true);
         if ($decoded === false || strlen($decoded) < self::IV_LENGTH) {
-            throw new \InvalidArgumentException('Dados criptografados inválidos.');
+            throw new \InvalidArgumentException('Invalid encrypted data.');
         }
 
         $iv = substr($decoded, 0, self::IV_LENGTH);
@@ -51,7 +51,7 @@ class Encrypt implements EncryptInterface
 
         $plain = openssl_decrypt($cipherText, self::CIPHER, $key, OPENSSL_RAW_DATA, $iv);
         if ($plain === false) {
-            throw new \RuntimeException('Erro ao descriptografar os dados.');
+            throw new \RuntimeException('Error on decrypt data.');
         }
 
         return $plain;
@@ -82,7 +82,7 @@ class Encrypt implements EncryptInterface
     }
 
     /**
-     * Normaliza a chave para 256 bits.
+     * Normalize the key to 256 bits.
      */
     private function normalizeKey(string $key): string
     {

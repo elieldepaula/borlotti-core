@@ -18,27 +18,26 @@ interface JsonInterface
 {
 
     /**
-     * Converte um valor PHP para JSON com validação.
+     * Converts a PHP value to JSON with validation.
      *
-     * @param mixed $data Os dados a serem convertidos para JSON.
-     * @param int $options Opções de codificação (veja json_encode docs).
-     * @param int $depth Profundidade máxima.
-     * @return string JSON codificado.
-     * @throws InvalidArgumentException Se a entrada for inválida.
-     * @throws RuntimeException Se a codificação JSON falhar.
+     * @param mixed $data The data to convert to JSON.
+     * @param int $options Encoding options (see json_encode docs).
+     * @param int $depth Maximum depth.
+     * @return string JSON encoded string.
+     * @throws InvalidArgumentException If the input is invalid.
+     * @throws RuntimeException If JSON encoding fails.
      */
     public function encode($data, int $options = 0, int $depth = 512): string;
 
     /**
-     * Decodifica uma string JSON para PHP com validação.
+     * Decodes a JSON string to PHP with validation.
      *
-     * @param string $json A string JSON a ser decodificada.
-     * @param bool $assoc Retornar objetos como arrays associativos.
-     * @param int $depth Profundidade máxima.
-     * @param int $options Opções de decodificação.
-     * @return mixed Dados decodificados.
-     * @throws InvalidArgumentException Se o JSON não for uma string válida.
-     * @throws RuntimeException Se a decodificação falhar.
+     * @param string $json The JSON string to decode.
+     * @param bool $assoc Return objects as associative arrays.
+     * @param int $depth Maximum depth. * @param int $options Decode options.
+     * @return mixed Decoded data.
+     * @throws InvalidArgumentException If the JSON is not a valid string.
+     * @throws RuntimeException If decoding fails.
      */
     public function decode(string $json, bool $assoc = true, int $depth = 512, int $options = 0);
 

@@ -44,13 +44,13 @@ class Json implements JsonInterface
     public function encode($data, int $options = 0, int $depth = 512): string
     {
         if (!$this->isSerializable($data)) {
-            throw new InvalidArgumentException('Os dados fornecidos não são serializáveis em JSON.');
+            throw new InvalidArgumentException('The provided data is not JSON serializable.');
         }
 
         $json = json_encode($data, $options, $depth);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new RuntimeException('Erro ao codificar JSON: ' . json_last_error_msg());
+            throw new RuntimeException('Error encoding JSON:' . json_last_error_msg());
         }
 
         return $json;
@@ -62,20 +62,20 @@ class Json implements JsonInterface
     public function decode(string $json, bool $assoc = true, int $depth = 512, int $options = 0)
     {
         if (!is_string($json)) {
-            throw new InvalidArgumentException('A entrada deve ser uma string JSON.');
+            throw new InvalidArgumentException('Input must be a JSON string.');
         }
 
         $data = json_decode($json, $assoc, $depth, $options);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new RuntimeException('Erro ao decodificar JSON: ' . json_last_error_msg());
+            throw new RuntimeException('Error decoding JSON:' . json_last_error_msg());
         }
 
         return $data;
     }
 
     /**
-     * Verifica se os dados podem ser serializados em JSON.
+     * Checks if the data can be serialized into JSON.
      *
      * @param mixed $data
      * @return bool

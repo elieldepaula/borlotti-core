@@ -19,6 +19,9 @@ use Borlotti\Core\Api\SessionInterface;
 class Session implements SessionInterface
 {
 
+    /**
+     * @inheritDoc
+     */
     public function useDatabaseHandler(): void
     {
         $handler = new DatabaseSessionHandler();

@@ -18,21 +18,21 @@ interface SessionInterface
 {
 
     /**
-     * Define o uso da sessão em banco de dados.
+     * Sets the session usage in the database.
      *
      * @return void
      */
     public function useDatabaseHandler(): void;
 
     /**
-     * Inicia a sessão se ainda não tiver sido iniciada.
+     * Starts the session if it has not already been started.
      *
      * @return void
      */
     public function start(): void;
 
     /**
-     * Retorna o ID da sessão.
+     * Returns the session ID.
      *
      * @param string|null $id
      * @return string
@@ -40,7 +40,7 @@ interface SessionInterface
     public function getId(?string $id = null): string;
 
     /**
-     * Define um valor na sessão.
+     * Sets a value in the session.
      *
      * @param string $key
      * @param $value
@@ -49,8 +49,7 @@ interface SessionInterface
     public function set(string $key, $value): void;
 
     /**
-     * Obtém um valor da sessão.
-     *
+     * Gets a value from the session. *
      * @param string $key
      * @param $default
      * @return mixed
@@ -58,7 +57,7 @@ interface SessionInterface
     public function get(string $key, $default = null);
 
     /**
-     * Verifica se existe uma chave na sessão.
+     * Checks if a key exists in the session.
      *
      * @param string $key
      * @return bool
@@ -66,7 +65,7 @@ interface SessionInterface
     public function has(string $key): bool;
 
     /**
-     * Remove um valor da sessão.
+     * Removes a value from the session.
      *
      * @param string $key
      * @return void
@@ -74,22 +73,21 @@ interface SessionInterface
     public function forget(string $key): void;
 
     /**
-     * Destrói a sessão atual.
+     * Destroys the current session.
      *
      * @return void
      */
     public function destroy(): void;
 
     /**
-     * Regenera o ID da sessão (evita fixation).
+     * Regenerates the session ID (prevents fixation).
      *
      * @return void
      */
     public function regenerate(): void;
 
     /**
-     * Define uma mensagem flash (dura apenas uma requisição).
-     *
+     * Sets a flash message (lasts only one request). *
      * @param string $key
      * @param $value
      * @return void
@@ -97,7 +95,7 @@ interface SessionInterface
     public function flash(string $key, $value): void;
 
     /**
-     * Recupera uma mensagem flash e a remove.
+     * Retrieves a flash message and removes it.
      *
      * @param string $key
      * @param $default
@@ -106,7 +104,7 @@ interface SessionInterface
     public function getFlash(string $key, $default = null);
 
     /**
-     * Limpa todas as flash messages armazenadas.
+     * Clears all stored flash messages.
      *
      * @return void
      */

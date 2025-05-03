@@ -21,35 +21,35 @@ interface EncryptInterface
     public const IV_LENGTH = 16;  // 128 bits
 
     /**
-     * Criptografa um dado.
+     * Encrypts data.
      *
-     * @param string $data Dados em texto.
-     * @param string $key Chave secreta de 32 bytes (use hash se necessário).
-     * @return string Base64 contendo IV + dados criptografados.
+     * @param string $data Plain text data.
+     * @param string $key 32-byte secret key (use hash if necessary).
+     * @return string Base64 string containing IV + encrypted data.
      */
     public function encrypt(string $data, string $key): string;
 
     /**
-     * Descriptografa os dados.
+     * Decrypts data.
      *
-     * @param string $encrypted Base64 contendo IV + criptografia.
-     * @param string $key Chave secreta de 32 bytes.
-     * @return string Texto original.
+     * @param string $encrypted Base64 containing IV + encryption.
+     * @param string $key C32-byte secret key.
+     * @return string Plain text.
      */
     public function decrypt(string $encrypted, string $key): string;
 
     /**
-     * Gera uma chave segura aleatória (base64).
+     * Generates a secure random key (base64).
      */
     public function generateKey(): string;
 
     /**
-     * Gera um hash seguro de uma string (por exemplo, senhas).
+     * Generates a secure hash of a string (e.g. passwords).
      */
     public function hash(string $data): string;
 
     /**
-     * Verifica se o hash bate com os dados.
+     * Checks if the hash matches the data.
      */
     public function verify(string $data, string $hash): bool;
 }

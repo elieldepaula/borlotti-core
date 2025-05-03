@@ -22,47 +22,52 @@ interface DateInterface
 {
 
     /**
-     * Retorna o horário atual como DateTime.
+     * Returns the current time as a DateTime.
      */
     public function now(?string $timezone = null): DateTime;
 
     /**
-     * Converte uma data de um formato para outro.
+     * Converts a date from one format to another.
      */
     public function convertFormat(string $date, string $fromFormat, string $toFormat): string;
 
     /**
-     * Verifica se a data é válida segundo um formato.
+     * Checks if the date is valid according to a format.
      */
     public function isValidDate(string $date, string $format = 'Y-m-d'): bool;
 
     /**
-     * Calcula a diferença entre duas datas.
+     * Calculates the difference between two dates.
      */
     public function difference($date1, $date2): DateInterval;
 
     /**
-     * Adiciona um intervalo de tempo a uma data.
+     * Adds a time interval to a date.
      */
     public function add($date, string $intervalStr): DateTime;
 
     /**
-     * Subtrai um intervalo de tempo de uma data.
+     * Subtracts a time interval from a date.
      */
     public function subtract($date, string $intervalStr): DateTime;
 
     /**
-     * Converte timestamp Unix para DateTime.
+     * Converts Unix timestamp to DateTime.
      */
     public function fromTimestamp(int $timestamp, ?string $timezone = null): DateTime;
 
     /**
-     * Converte DateTime ou string para timestamp Unix.
+     * Converts DateTime or string to Unix timestamp.
      */
     public function toTimestamp($date): int;
 
     /**
-     * Formata uma data segundo a localidade.
+     * Formats a date according to the location.
      */
-    public function formatLocalized($date, string $locale = 'pt_BR', int $dateType = IntlDateFormatter::LONG, int $timeType = IntlDateFormatter::SHORT, ?string $timezone = null): string;
+    public function formatLocalized(
+        $date,
+        string $locale = 'pt_BR',
+        int $dateType = IntlDateFormatter::LONG,
+        int $timeType = IntlDateFormatter::SHORT,
+        ?string $timezone = null): string;
 }
