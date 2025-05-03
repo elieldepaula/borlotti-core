@@ -22,6 +22,10 @@ use Slim\Views\TwigMiddleware;
 use DI\Container;
 use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
+use Slim\Exception\HttpNotFoundException;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Throwable;
+
 
 class Bootstrap
 {
@@ -56,13 +60,13 @@ class Bootstrap
 
     /**
      * Sets the application dependencies.
-     * 
+     *
      * Definition:
      *
      * [
      *     'Name\Space\ClassInterface::class' => 'Name\Space\Class::class'
      * ]
-     * 
+     *
      * @param $dependencies
      * @return $this
      */
@@ -93,7 +97,7 @@ class Bootstrap
 
     /**
      * Sets the application templates path.
-     * 
+     *
      * @param $path
      * @param $useCache
      * @return $this
@@ -102,6 +106,33 @@ class Bootstrap
     public function setTemplatesPath(FilesystemLoader $path, $useCache = false): Bootstrap
     {
         $this->template = new Twig($path, ['cache' => $useCache]);
+        $twig = $this->template;
+
+        // Custom Error Handler
+        $customErrorHandler = function (
+            Request $request,
+            Throwable $exception,
+            bool $displayErrorDetails,
+            bool $logErrors,
+            bool $logErrorDetails
+        ) use ($twig) {
+            $response = new \Slim\Psr7\Response();
+
+            if ($exception instanceof HttpNotFoundException) {
+                return $twig->render($response->withStatus(404), 'errors/404.twig', [
+                    'message' => 'Page not found.'
+                ]);
+            }
+
+            // Fallback for other errors.
+            return $twig->render($response->withStatus(500), 'errors/500.twig', [
+                'message' => $exception->getMessage()
+            ]);
+        };
+        // Register the error middleware.
+        $errorMiddleware = $this->app->addErrorMiddleware(true, true, true);
+        $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
+
         $this->app->add(TwigMiddleware::create($this->app, $this->template));
         $this->template->getEnvironment()->addFunction(new \Twig\TwigFunction('asset', function ($path) {
             return "/assets/" . ltrim($path, '/');
@@ -111,7 +142,7 @@ class Bootstrap
 
     /**
      * Sets the application routes.
-     * 
+     *
      * Definition:
      * [
      *     'routeName' => [
@@ -150,7 +181,7 @@ class Bootstrap
 
     /**
      * Runs the application.
-     * 
+     *
      * @return void
      */
     public function run(): void
