@@ -34,7 +34,7 @@ class HttpController
     /**
      * Render the view.
      *
-     * @param String $view
+     * @param string $view
      * @param array $data
      * @param Request $request
      * @param Response $response
@@ -45,8 +45,7 @@ class HttpController
      */
     public function render(String $view, Array $data, Request $request, Response $response): ResponseInterface
     {
-        $viewPath = 'Modules/' . $this->moduleName . '/' . $this->viewFolder . '/' . $view;
         $twig = Twig::fromRequest($request);
-        return $twig->render($response, $viewPath, $data);
+        return $twig->render($response, $view, $data);
     }
 }

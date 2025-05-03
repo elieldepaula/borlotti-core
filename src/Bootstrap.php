@@ -70,7 +70,7 @@ class Bootstrap
         if (!is_array($dependencies) || empty($dependencies)) {
             return $this;
         }
-         $this->_setDependencies($dependencies);
+        $this->_setDependencies($dependencies);
         return $this;
     }
 
@@ -100,7 +100,7 @@ class Bootstrap
      */
     public function setTemplatesPath($path, $useCache = false): Bootstrap
     {
-        $this->template = Twig::create($path, ['cache' => $useCache]);
+        $this->template = new Twig($path, ['cache' => $useCache]);
         $this->app->add(TwigMiddleware::create($this->app, $this->template));
         $this->template->getEnvironment()->addFunction(new \Twig\TwigFunction('asset', function ($path) {
             return "/assets/" . ltrim($path, '/');
