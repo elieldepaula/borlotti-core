@@ -11,8 +11,9 @@
  * @license     https://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-//TODO: Redefine the base path.
-require_once __DIR__ . '/../../vendor/autoload.php';
+define('BASE_PATH', __DIR__ . '/../../../../../');
+
+require_once BASE_PATH . 'vendor/autoload.php';
 
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
