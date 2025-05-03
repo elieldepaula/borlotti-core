@@ -29,6 +29,8 @@ class Bootstrap
     private App $app;
     /** @var Container */
     private Container $container;
+    /** @var Twig */
+    private Twig $template;
 
     /**
      * Class constructor.
@@ -98,8 +100,11 @@ class Bootstrap
      */
     public function setTemplatesPath($path, $useCache = false): Bootstrap
     {
-        $twig = Twig::create($path, ['cache' => $useCache]);
-        $this->app->add(TwigMiddleware::create($this->app, $twig));
+        $this->template = Twig::create($path, ['cache' => $useCache]);
+        $this->app->add(TwigMiddleware::create($this->app, $this->template));
+        $this->template->getEnvironment()->addFunction(new \Twig\TwigFunction('asset', function ($path) {
+            return "/assets/" . ltrim($path, '/');
+        }));
         return $this;
     }
 
