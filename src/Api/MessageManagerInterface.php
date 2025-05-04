@@ -31,6 +31,6 @@ interface MessageManagerInterface
      *
      * @return array
      */
-    public function getFlashMessage(): array;
+    public function getFlashMessage(): ?array;
 
 }

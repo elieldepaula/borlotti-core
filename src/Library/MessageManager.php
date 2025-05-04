@@ -49,7 +49,7 @@ class MessageManager implements MessageManagerInterface
     /**
      * @inheritDoc
      */
-    public function getFlashMessage(): array
+    public function getFlashMessage(): ?array
     {
         return $this->session->getFlash('flash');
     }
