@@ -25,6 +25,7 @@ use Twig\Loader\FilesystemLoader;
 use Slim\Exception\HttpNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Throwable;
+use function DI\autowire;
 
 
 class Bootstrap
@@ -88,9 +89,7 @@ class Bootstrap
     private function _setDependencies($dependencies): Bootstrap
     {
         foreach ($dependencies as $interface => $class) {
-            $this->container->set($interface, function() use ($class){
-                return new $class();
-            });
+            $this->container->set($interface, autowire($class));
         }
         return $this;
     }
