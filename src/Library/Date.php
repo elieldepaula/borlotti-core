@@ -121,9 +121,9 @@ class Date implements DateInterface
     }
 
     /**
-     * Converte para DateTime seguro.
+     * @inheritDoc
      */
-    private function toDateTime($input): DateTime
+    public function toDateTime($input): DateTime
     {
         if ($input instanceof DateTime) {
             return clone $input;

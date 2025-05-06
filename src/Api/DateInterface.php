@@ -70,4 +70,10 @@ interface DateInterface
         int $dateType = IntlDateFormatter::LONG,
         int $timeType = IntlDateFormatter::SHORT,
         ?string $timezone = null): string;
+    
+    /**
+     * Convert a string to datetime.
+     */
+    public function toDateTime($input): DateTime;
+
 }
