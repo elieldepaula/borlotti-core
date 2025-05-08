@@ -16,6 +16,7 @@ namespace Borlotti\Core\Models;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 abstract class AbstractRepository
 {
@@ -84,5 +85,51 @@ abstract class AbstractRepository
     public function where(string $column, $value): Model
     {
         return $this->model->where($column, $value);
+    }
+
+    /**
+     * Set multiple where conditions.
+     * @param array $conditions
+     * @return Builder
+     */
+    public function whereMultiple(array $conditions)
+    {
+        $query = $this->model->newQuery();
+        foreach ($conditions as $condition) {
+            if (is_array($condition) && count($condition) === 3) {
+                [$column, $operator, $value] = $condition;
+
+                switch (strtolower($operator)) {
+                    case 'in':
+                        $query->whereIn($column, $value);
+                        break;
+                    case 'not in':
+                        $query->whereNotIn($column, $value);
+                        break;
+                    case 'like':
+                    case 'not like':
+                        $query->where($column, $operator, $value);
+                        break;
+                    default:
+                        $query->where($column, $operator, $value);
+                }
+            } elseif (is_array($condition)) {
+                foreach ($condition as $column => $value) {
+                    $query->where($column, '=', $value);
+                }
+            }
+        }
+        return $query;
+    }
+
+    /**
+     * Ordering results.
+     * @param string $column
+     * @param string $direction
+     * @return Model
+     */
+    public function orderBy(string $column, string $direction = 'asc')
+    {
+        return $this->model->orderBy($column, $direction);
     }
 }
