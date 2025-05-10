@@ -11,6 +11,7 @@
  */
 
 declare(strict_types=1);
+
 /**
  * Dependency injection array.
  */
@@ -21,4 +22,6 @@ return [
     \Borlotti\Core\Api\SessionInterface::class => \Borlotti\Core\Library\Session\Session::class,
     \Borlotti\Core\Api\EncryptInterface::class => \Borlotti\Core\Library\Encrypt::class,
     \Borlotti\Core\Api\MessageManagerInterface::class => \Borlotti\Core\Library\MessageManager::class,
+    \Borlotti\Core\Api\Auth\AuthManagerInterface::class => \Borlotti\Core\Library\Auth\AuthManager::class,
+    \Borlotti\Core\Api\Auth\AuthServiceInterface::class => \Borlotti\Core\Library\Auth\AuthService::class,
 ];
