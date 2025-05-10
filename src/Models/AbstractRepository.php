@@ -26,6 +26,15 @@ abstract class AbstractRepository
     protected Model $model;
 
     /**
+     * Get a new query builder.
+     * @return Builder
+     */
+    public function query(): Builder
+    {
+        return $this->model->newQuery();
+    }
+
+    /**
      * Get all records from a model.
      * @return Collection
      */
@@ -40,7 +49,18 @@ abstract class AbstractRepository
      */
     public function find(int $id): array|Collection|Model|null
     {
-        return $this->model->find($id);
+        return $this->query()->find($id);
+    }
+
+    /**
+     * Find a record by a field.
+     * @param string $field
+     * @param $value
+     * @return Builder|null
+     */
+    public function findBy(string $field, $value): ?Builder
+    {
+        return $this->query()->where($field, $value);
     }
 
     /**
@@ -80,11 +100,11 @@ abstract class AbstractRepository
      * Search a record by column and value.
      * @param string $column
      * @param mixed $value
-     * @return Model
+     * @return Builder
      */
-    public function where(string $column, $value): Model
+    public function where(string $column, $value): Builder
     {
-        return $this->model->where($column, $value);
+        return $this->query()->where($column, $value);
     }
 
     /**
@@ -94,7 +114,7 @@ abstract class AbstractRepository
      */
     public function whereMultiple(array $conditions)
     {
-        $query = $this->model->newQuery();
+        $query = $this->query();
         foreach ($conditions as $condition) {
             if (is_array($condition) && count($condition) === 3) {
                 [$column, $operator, $value] = $condition;
@@ -130,6 +150,6 @@ abstract class AbstractRepository
      */
     public function orderBy(string $column, string $direction = 'asc')
     {
-        return $this->model->orderBy($column, $direction);
+        return $this->query()->orderBy($column, $direction);
     }
 }
