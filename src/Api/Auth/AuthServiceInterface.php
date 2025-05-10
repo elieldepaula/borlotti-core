@@ -35,4 +35,10 @@ interface AuthServiceInterface
      * @return mixed
      */
     public function user();
+
+    /**
+     * Check if a user is logged in.
+     * @return bool
+     */
+    public function isLogged(): bool;
 }

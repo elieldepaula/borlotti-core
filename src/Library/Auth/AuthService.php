@@ -51,4 +51,12 @@ class AuthService implements AuthServiceInterface
     {
         return $this->manager->auth()->user();
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function isLogged(): bool
+    {
+        return $this->manager->auth()->isLogged();
+    }
 }

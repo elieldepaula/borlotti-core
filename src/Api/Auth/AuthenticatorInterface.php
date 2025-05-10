@@ -36,4 +36,10 @@ interface AuthenticatorInterface
      */
     public function user(): ?object;
 
+    /**
+     * Check if a user is logged in.
+     * @return bool
+     */
+    public function isLogged(): bool;
+
 }
