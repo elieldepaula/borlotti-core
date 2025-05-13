@@ -24,4 +24,5 @@ return [
     \Borlotti\Core\Api\MessageManagerInterface::class => \Borlotti\Core\Library\MessageManager::class,
     \Borlotti\Core\Api\Auth\AuthManagerInterface::class => \Borlotti\Core\Library\Auth\AuthManager::class,
     \Borlotti\Core\Api\Auth\AuthServiceInterface::class => \Borlotti\Core\Library\Auth\AuthService::class,
+    \Borlotti\Core\Api\Auth\AuthMiddlewareInterface::class => \Borlotti\Core\Library\Auth\AuthMiddleware::class,
 ];
