@@ -206,7 +206,7 @@ class Bootstrap
             )->setName($name);
 
             if (isset($route['middleware'])) {
-                $appRoute->add($routes['middleware']);
+                $appRoute->add($route['middleware']);
             }
         }
         return $this;
