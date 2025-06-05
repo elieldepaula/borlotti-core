@@ -15,38 +15,74 @@ declare(strict_types=1);
 namespace Borlotti\Core;
 
 use Borlotti\Core\Database\Connection;
+use Borlotti\Core\Library\EventManager;
+use DI\DependencyException;
+use DI\NotFoundException;
+use Exception;
+use Psr\Log\LoggerInterface;
 use Slim\App;
 use Slim\Factory\AppFactory;
 use Slim\Views\Twig;
 use Slim\Views\TwigMiddleware;
 use DI\Container;
-use Twig\Error\LoaderError;
 use Twig\Loader\FilesystemLoader;
 use Slim\Exception\HttpNotFoundException;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Throwable;
 use function DI\autowire;
 
-
 class Bootstrap
 {
 
+    /** @var Bootstrap|null */
+    private static ?Bootstrap $instance = null;
     /** @var App */
     private App $app;
     /** @var Container */
     private Container $container;
-    /** @var Twig */
-    private Twig $template;
 
     /**
      * Class constructor.
      */
-    public function __construct()
+    private function __construct()
     {
         $this->initDatabaseConnection();
         $this->container = new Container();
         AppFactory::setContainer($this->container);
         $this->app = AppFactory::create();
+    }
+
+    /**
+     * Get the singleton instance of Bootstrap.
+     *
+     * @return Bootstrap
+     */
+    public static function getInstance(): Bootstrap
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
+
+    /**
+     * Get the app instance.
+     *
+     * @return App
+     */
+    public function getApp(): App
+    {
+        return $this->app;
+    }
+
+    /**
+     * Get the container instance.
+     *
+     * @return Container
+     */
+    public function getContainer(): Container
+    {
+        return $this->container;
     }
 
     /**
@@ -84,28 +120,26 @@ class Bootstrap
      * Sets the application dependencies and merge the core dependencies.
      *
      * @param $dependencies
-     * @return Bootstrap
+     * @return void
      */
-    private function _setDependencies($dependencies): Bootstrap
+    private function _setDependencies($dependencies): void
     {
         foreach ($dependencies as $interface => $class) {
-            $this->container->set($interface, autowire($class));
+            $this->container->set($interface, is_string($class) ? autowire($class) : $class);
         }
-        return $this;
     }
 
     /**
      * Sets the application templates path.
      *
-     * @param $path
-     * @param $useCache
+     * @param FilesystemLoader $path
+     * @param bool $useCache
      * @return $this
-     * @throws LoaderError
      */
-    public function setTemplatesPath(FilesystemLoader $path, $useCache = false): Bootstrap
+    public function setTemplatesPath(FilesystemLoader $path, bool $useCache = false): Bootstrap
     {
-        $this->template = new Twig($path, ['cache' => $useCache]);
-        $twig = $this->template;
+        $template = new Twig($path, ['cache' => $useCache]);
+        $twig = $template;
 
         // Custom Error Handler
         $customErrorHandler = function (
@@ -132,8 +166,8 @@ class Bootstrap
         $errorMiddleware = $this->app->addErrorMiddleware(true, true, true);
         $errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 
-        $this->app->add(TwigMiddleware::create($this->app, $this->template));
-        $this->template->getEnvironment()->addFunction(new \Twig\TwigFunction('asset', function ($path) {
+        $this->app->add(TwigMiddleware::create($this->app, $template));
+        $template->getEnvironment()->addFunction(new \Twig\TwigFunction('asset', function ($path) {
             return "/assets/" . ltrim($path, '/');
         }));
         return $this;
@@ -175,6 +209,48 @@ class Bootstrap
                 $appRoute->add($routes['middleware']);
             }
         }
+        return $this;
+    }
+
+    /**
+     * Set the application events.
+     *
+     * Definition:
+     * [
+     *     [
+     *         'event' => 'before_save',
+     *         'class' \Name\Space\Observer::class,
+     *         'priority' = 100
+     *     ]
+     * ]
+     *
+     * Priority is optional, the default value is 100, from 0, 50, 100, 500 and 1000.
+     *
+     * @param $events
+     * @return $this
+     * @throws DependencyException
+     * @throws NotFoundException
+     */
+    public function setEvents($events): Bootstrap
+    {
+
+        if (!is_array($events) || empty($events)) {
+            return $this;
+        }
+
+        $eventManager = $this->container->get(EventManager::class);
+        try {
+            foreach ($events as $observer) {
+                $eventName = $observer['event'];
+                $instance = $this->container->get($observer['class']);
+                $eventPriority = (isset($observer['priority'])) ? $observer['priority'] : 100;
+                $eventManager->on($eventName, [$instance, 'execute'], $eventPriority);
+            }
+        } catch (Exception $e) {
+            $logger = $this->container->get(LoggerInterface::class);
+            $logger->error($e->getMessage());
+        }
+
         return $this;
     }
 

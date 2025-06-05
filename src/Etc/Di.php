@@ -25,4 +25,5 @@ return [
     \Borlotti\Core\Api\Auth\AuthManagerInterface::class => \Borlotti\Core\Library\Auth\AuthManager::class,
     \Borlotti\Core\Api\Auth\AuthServiceInterface::class => \Borlotti\Core\Library\Auth\AuthService::class,
     \Borlotti\Core\Api\Auth\AuthMiddlewareInterface::class => \Borlotti\Core\Library\Auth\AuthMiddleware::class,
+    \Borlotti\Core\Library\EventManager::class => \Borlotti\Core\Library\EventManager::class,
 ];
